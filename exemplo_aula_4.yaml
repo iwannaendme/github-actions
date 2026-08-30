@@ -1,0 +1,29 @@
+# AULA 4 - EXEMPLOS PRÁTICOS DE EVENTOS QUE PODEM DISPARAR FLUXOS DE TRABALHO NO GITHUB ACTIONS
+
+# Exemplo 1: Agendamento de Tarefas (Scheduled Tasks) com GitHub Actions
+
+on:
+  schedule:
+    - cron: '0 8-17 * * 1-5' 
+
+# Exemplo 2: Evento de Push
+
+on:
+    pull_request
+
+# Exemplo 3: Evento de Push e Pull Request
+
+on: [push, pull_request]
+
+# Exemplo 4: Evento de Push e Pull Request em Branch Específica
+
+on:
+    pull_request:
+      branches:
+
+          - develop
+
+# Exemplo 5: webhook
+
+on:
+    gollum

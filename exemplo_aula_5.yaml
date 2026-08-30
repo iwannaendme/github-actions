@@ -1,0 +1,44 @@
+# Nome do workflow de Integração Contínua e Entrega Contínua
+name: CI/CD Workflow
+
+# Dispara quando faz push no repositório
+on: [push]
+
+# Define os jobs (tarefas) a executar
+jobs:
+  # JOB 1: Testes - valida se o código funciona
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Copia o código do repositório para o servidor
+      - name: Checkout do repositório
+        uses: actions/checkout@v2
+      
+      # Instala Node.js versão 20
+      - name: Configurar Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '20'
+
+      # Baixa as dependências do projeto
+      - name: Instalar dependências
+        run: npm install
+      
+      # Executa os testes (se falhar, para aqui)
+      - name: Executar testes
+        run: npm test
+    
+  # JOB 2: Deploy - publica o código em produção
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test  # Só executa se o job 'test' passar com sucesso
+
+    steps:
+      # Copia o código do repositório
+      - name: Checkout do repositório
+        uses: actions/checkout@v2
+      
+      # Publica a aplicação para produção
+      - name: Deploy para o ambiente de produção
+        run: npm run deploy

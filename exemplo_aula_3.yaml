@@ -1,0 +1,42 @@
+# AULA 3 - NOÇÕES BASICAS DE FLUXOS DE TRABALHO (WORKFLOWS) NO GITHUB ACTIONS
+
+# .github/workflows/build/yml
+# Arquivo de configuração do GitHub Actions para CI/CD
+
+# Nome descritivo do workflow
+name: Node Build.
+
+# Gatilho: executa automaticamente em cada push para o repositório
+on: [push]
+
+# Definição dos jobs (tarefas) a executar
+jobs:
+  # Job principal de build
+  mainbuild:
+    # Ambiente onde o job será executado (puxado da matriz abaixo)
+    runs-on: ${{matrix.os}}
+    
+    # Define uma matriz de testes com múltiplas combinações
+    strategy:
+      matrix:
+        # Versão do Node.js a usar
+        node-version: [20.x]
+        # Sistema operacional onde rodar (Windows)
+        os: [windows-latest]
+    
+    # Passos sequenciais executados neste job
+    steps:
+      # Passo 1: Clona o código do repositório
+      - uses: actions/checkout@v1
+      
+      # Passo 2: Configura o Node.js com a versão especificada
+      - name: run node.js on latest Windows.
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      # Passo 3: Instala dependências e executa o build
+      - name: Install NPM and build.
+        run: |
+          npm ci        # npm clean install (instala dependências de forma segura)
+          npm run build # Executa o script de build do projeto 
